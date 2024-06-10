@@ -1,0 +1,88 @@
+### Update training with provided id
+PUT http://localhost:8080/v1/trainings/2
+Content-Type: application/json
+
+{
+  "id": 2,
+  "userId": 2,
+  "startTime": "2024-01-18T14:30:00.000+00:00",
+  "endTime": "2024-01-18T16:00:00.000+00:00",
+  "activityType": "WALKING",
+  "distance": 25.0,
+  "averageSpeed": 18.5
+}
+
+<> 2024-06-10T223527.400.json
+<> 2024-06-10T222548.200.json
+
+### Get all trainings
+GET http://localhost:8080/v1/trainings
+Content-Type: application/json
+
+<> 2024-06-10T224338.200.json
+<> 2024-06-10T223506.200.json
+<> 2024-06-10T222556.200.json
+<> 2024-06-10T222321.200.json
+
+### Get trainings for user with provided id
+GET http://localhost:8080/v1/trainings/user/1
+
+<> 2024-06-10T223703.200.json
+<> 2024-06-10T223256.200.json
+<> 2024-06-10T223251.200.json
+<> 2024-06-10T223245.200.json
+
+### Create new training
+POST http://localhost:8080/v1/trainings
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "startTime": "2024-03-18T14:30:00.000+00:00",
+  "endTime": "2024-03-18T16:00:00.000+00:00",
+  "activityType": "CYCLING",
+  "distance": 123,
+  "averageSpeed": 45
+}
+
+<> 2024-06-10T225355.201.json
+<> 2024-06-10T223648.201.json
+
+### Get all trainings finished after provided date
+GET http://localhost:8080/v1/trainings/finished/2024-03-17
+
+<> 2024-06-10T225407.200.json
+<> 2024-06-10T225358.200.json
+<> 2024-06-10T225320.200.json
+<> 2024-06-10T225313.200.json
+<> 2024-06-10T225306.200.json
+<> 2024-06-10T225258.200.json
+<> 2024-06-10T225245.200.json
+<> 2024-06-10T224257.200.json
+<> 2024-06-10T224001.200.json
+
+### Get all trainings with provided activity type
+GET http://localhost:8080/v1/trainings/byActivity?
+    type=RUNNING
+
+<> 2024-06-10T225801.200.json
+<> 2024-06-10T225618.200.json
+<> 2024-06-10T225605.200.json
+<> 2024-06-10T225546.500.json
+<> 2024-06-10T225540.500.json
+
+### Update training with provided id
+PUT http://localhost:8080/v1/trainings/7
+Content-Type: application/json
+
+{
+  "id": 7,
+  "userId": 7,
+  "startTime": "2024-01-13T15:45:00.000+00:00",
+  "endTime": "2024-01-13T17:30:00.000+00:00",
+  "activityType": "RUNNING",
+  "distance": 15.0,
+  "averageSpeed": 20.8
+}
+
+<> 2024-06-10T225755.200.json

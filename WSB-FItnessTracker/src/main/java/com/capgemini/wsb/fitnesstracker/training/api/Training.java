@@ -3,10 +3,7 @@ package com.capgemini.wsb.fitnesstracker.training.api;
 import com.capgemini.wsb.fitnesstracker.training.internal.ActivityType;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 
 import java.util.Date;
@@ -26,19 +23,24 @@ public class Training {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Setter
     @Column(name = "start_time", nullable = false)
     private Date startTime;
 
+    @Setter
     @Column(name = "end_time", nullable = false)
     private Date endTime;
 
+    @Setter
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "activity_type", nullable = false)
     private ActivityType activityType;
 
+    @Setter
     @Column(name = "distance")
     private double distance;
 
+    @Setter
     @Column(name = "average_speed")
     private double averageSpeed;
 
@@ -54,27 +56,6 @@ public class Training {
         this.endTime = endTime;
         this.activityType = activityType;
         this.distance = distance;
-        this.averageSpeed = averageSpeed;
-    }
-
-    // Metody setters
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
-    }
-
-    public void setDistance(double distance) {
-        this.distance = distance;
-    }
-
-    public void setAverageSpeed(double averageSpeed) {
         this.averageSpeed = averageSpeed;
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -33,12 +33,28 @@ public class TrainingController {
         return ResponseEntity.status(HttpStatus.CREATED).body(addedTrainingDto);
     }
 
+    @GetMapping("/mine")
+    public List<TrainingDto> getMyTrainings() {
+        return trainingService.findMyTrainings()
+                .stream()
+                .map(trainingMapper::toDto)
+                .toList();
+    }
+
     @GetMapping("/{trainingId}")
     public ResponseEntity<TrainingDto> getTrainingById(@PathVariable Long trainingId) {
         return trainingService.getTraining(trainingId)
                 .map(trainingMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<TrainingDto> getTrainingsByUserId(@PathVariable Long userId) {
+        return trainingService.findTrainingsByUserId(userId)
+                .stream()
+                .map(trainingMapper::toDto)
+                .toList();
     }
 
     @PutMapping("/{trainingId}")
@@ -53,13 +69,15 @@ public class TrainingController {
         trainingService.deleteTraining(trainingId);
         return ResponseEntity.noContent().build();
     }
+
     @GetMapping("/finished/{finishDate}")
-    public List<TrainingDto> getAllFinishedTrainings(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate finishDate) {
+    public List<TrainingDto> getAllFinishedTrainings(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date finishDate) {
         return trainingService.findAllFinishedTrainings(finishDate)
                 .stream()
                 .map(trainingMapper::toDto)
                 .toList();
     }
+
     @GetMapping("/byActivity")
     public List<TrainingDto> getAllTrainingsByActivity(@RequestParam("type") String activityType) {
 

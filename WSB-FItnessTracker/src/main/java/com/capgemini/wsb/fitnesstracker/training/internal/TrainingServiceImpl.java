@@ -6,8 +6,6 @@ import com.capgemini.wsb.fitnesstracker.training.api.TrainingProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +14,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class TrainingServiceImpl implements TrainingProvider {
+    public static final long MY_USER_IDENTIFIER = 1L;
     private final TrainingRepository trainingRepository;
 
     @Override
@@ -29,6 +28,11 @@ public class TrainingServiceImpl implements TrainingProvider {
     }
 
     @Override
+    public List<Training> findMyTrainings() {
+        return trainingRepository.findByUserId(MY_USER_IDENTIFIER);
+    }
+
+    @Override
     public Training createTraining(Training training) {
         return trainingRepository.save(training);
     }
@@ -36,16 +40,6 @@ public class TrainingServiceImpl implements TrainingProvider {
     @Override
     public Optional<Training> getTraining(Long trainingId) {
         return trainingRepository.findById(trainingId);
-    }
-
-    @Override
-    public List<Training> getAllTrainings() {
-        return null;
-    }
-
-    @Override
-    public List<Training> getAllTrainingsForUser(long userId) {
-        return null;
     }
 
     @Override
@@ -72,18 +66,11 @@ public class TrainingServiceImpl implements TrainingProvider {
     }
 
     @Override
-    public List<Training> findAllFinishedTrainings(LocalDate finishDate) {
-        LocalDateTime finishDateTime = finishDate.atStartOfDay();
-        List<Training> finishedTrainings = trainingRepository.findAll()
+    public List<Training> findAllFinishedTrainings(Date finishDate) {
+        return trainingRepository.findAll()
                 .stream()
-                .filter(training -> training.getEndTime().after(convertToDate(finishDateTime)))
-                .filter(training -> training.getEndTime().before(convertToDate(finishDateTime.plusDays(1))))
+                .filter(training -> training.getEndTime().after(finishDate))
                 .collect(Collectors.toList());
-        return finishedTrainings;
-    }
-
-    private Date convertToDate(LocalDateTime localDateTime) {
-        return java.sql.Timestamp.valueOf(localDateTime);
     }
 
     public List<Training> findAllTrainingsByActivity(String activityType) {
