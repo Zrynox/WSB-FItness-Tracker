@@ -43,21 +43,6 @@ public class TrainingServiceImpl implements TrainingProvider {
     }
 
     @Override
-    public Training addTraining(Training training) {
-        return null;
-    }
-
-    @Override
-    public List<Training> getAllFinishTrainings(Date finishData) {
-        return null;
-    }
-
-    @Override
-    public List<Training> getAllTrainingTypes(ActivityType activity) {
-        return null;
-    }
-
-    @Override
     public void deleteTraining(Long trainingId) {
         Training training = trainingRepository.findById(trainingId)
                 .orElseThrow(() -> new TrainingNotFoundException(trainingId));
