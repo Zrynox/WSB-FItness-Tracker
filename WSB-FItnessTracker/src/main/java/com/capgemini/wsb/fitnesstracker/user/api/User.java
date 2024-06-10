@@ -37,7 +37,7 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Setter
+    @Getter
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Training> trainings;
 
@@ -53,8 +53,11 @@ public class User {
         this.email = email;
     }
 
-
-    public List<Training> getTrainings() {
-        return trainings;
+    public void setTrainings(List<Training> trainings) {
+        this.trainings.clear();
+        if(trainings != null) {
+            this.trainings.addAll(trainings);
+        }
     }
+
 }

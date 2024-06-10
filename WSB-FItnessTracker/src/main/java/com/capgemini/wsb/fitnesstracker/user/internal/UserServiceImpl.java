@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,7 +56,7 @@ class UserServiceImpl implements UserService, UserProvider {
             existingUser.setBirthdate(updatedUser.getBirthdate());
             existingUser.setLastName(updatedUser.getLastName());
             existingUser.setFirstName(updatedUser.getFirstName());
-            existingUser.setTrainings(updatedUser.getTrainings()==null?new ArrayList<>():updatedUser.getTrainings());
+            existingUser.setTrainings(updatedUser.getTrainings());
             existingUser.setEmail(updatedUser.getEmail());
             return userRepository.save(existingUser);
         }).orElseThrow(()-> new UserNotFoundException(updatedUser.getId()));
