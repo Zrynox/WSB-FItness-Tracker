@@ -2,8 +2,6 @@ package com.capgemini.wsb.fitnesstracker.user.internal;
 
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -49,5 +47,12 @@ class UserController {
     public ResponseEntity<List<User>> searchUsersByEmail(@RequestParam String emailFragment) {
         List<User> users = userService.searchUsersByEmail(emailFragment);
         return ResponseEntity.ok(users);
+    }
+    @PutMapping
+    public ResponseEntity<UserDto> updateUser(@RequestParam Long userid, @RequestBody UserDto userDto){
+        User user = userMapper.toEntity(userDto);
+        User updatedUser = userService.updateUser(userid,user);
+        UserDto updatedUserDTO = userMapper.toDto(updatedUser);
+        return ResponseEntity.ok(updatedUserDTO);
     }
 }

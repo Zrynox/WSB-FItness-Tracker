@@ -1,12 +1,14 @@
 package com.capgemini.wsb.fitnesstracker.user.internal;
 
 import com.capgemini.wsb.fitnesstracker.user.api.User;
+import com.capgemini.wsb.fitnesstracker.user.api.UserNotFoundException;
 import com.capgemini.wsb.fitnesstracker.user.api.UserProvider;
 import com.capgemini.wsb.fitnesstracker.user.api.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,5 +49,18 @@ class UserServiceImpl implements UserService, UserProvider {
     @Override
     public List<User> searchUsersByEmail(String emailFragment) {
         return userRepository.findByEmailContainingIgnoreCase(emailFragment);
+    }
+
+    public User updateUser(Long userid, User updatedUser) {
+        assert (userid != null);
+       return userRepository.findById(userid).map(existingUser -> {
+            existingUser.setBirthdate(updatedUser.getBirthdate());
+            existingUser.setLastName(updatedUser.getLastName());
+            existingUser.setFirstName(updatedUser.getFirstName());
+            existingUser.setTrainings(updatedUser.getTrainings()==null?new ArrayList<>():updatedUser.getTrainings());
+            existingUser.setEmail(updatedUser.getEmail());
+            return userRepository.save(existingUser);
+        }).orElseThrow(()-> new UserNotFoundException(updatedUser.getId()));
+
     }
 }
