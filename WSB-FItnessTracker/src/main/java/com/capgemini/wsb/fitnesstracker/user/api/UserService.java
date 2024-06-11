@@ -1,5 +1,7 @@
 package com.capgemini.wsb.fitnesstracker.user.api;
 
+import java.util.List;
+
 /**
  * Interface (API) for modifying operations on {@link User} entities through the API.
  * Implementing classes are responsible for executing changes within a database transaction,
@@ -19,7 +21,9 @@ public interface UserService {
      * Deletes a user from the database based on their ID.
      *
      * @param userId the ID of the user to be deleted
+     * @return
      */
-    void deleteUser(Long userId);
+    boolean deleteUser(Long userId);
 
+    List<User> findUsersOlderThanAge(int age);
 }

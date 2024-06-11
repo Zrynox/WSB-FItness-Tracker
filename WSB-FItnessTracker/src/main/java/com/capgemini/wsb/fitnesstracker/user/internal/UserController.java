@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/users")
@@ -40,13 +41,28 @@ class UserController {
     }
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
-        return ResponseEntity.noContent().build();
+        boolean deleted = userService.deleteUser(userId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @GetMapping("/olderThanAge")
+    public ResponseEntity<List<UserDto>> findUsersOlderThanAge(@RequestParam int age) {
+        List<User> users = userService.findUsersOlderThanAge(age);
+        List<UserDto> userDtos = users.stream()
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(userDtos);
     }
     @GetMapping("/search")
-    public ResponseEntity<List<User>> searchUsersByEmail(@RequestParam String emailFragment) {
+    public ResponseEntity<List<UserDto>> searchUsersByEmail(@RequestParam String emailFragment) {
         List<User> users = userService.searchUsersByEmail(emailFragment);
-        return ResponseEntity.ok(users);
+        List<UserDto> userDtos = users.stream()
+                .map(userMapper::toDto)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(userDtos);
     }
     @PutMapping
     public ResponseEntity<UserDto> updateUser(@RequestParam Long userid, @RequestBody UserDto userDto){
